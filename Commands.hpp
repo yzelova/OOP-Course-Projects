@@ -6,6 +6,18 @@
 
 using String = std::string;
 
+class InvalidCommand : public ICommand
+{
+public:
+    InvalidCommand() = default;
+    InvalidCommand(const String &);
+    virtual void execute() override;
+    virtual ~InvalidCommand() = default;
+
+private:
+    String m_message{"Invalid command"};
+};
+
 class OpenCommand : public ICommand
 {
 public:
@@ -57,5 +69,6 @@ public:
 class ExitCommand : public ICommand
 {
 public:
+    virtual void execute() final;
     virtual ~ExitCommand() = default;
 };

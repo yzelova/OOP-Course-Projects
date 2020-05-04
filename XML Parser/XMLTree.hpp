@@ -15,6 +15,9 @@ public:
 
     void parse(std::istream &);
 
+    void save();
+    void save_as(const String &);
+
     void set_open_file_name(const String &);
     String get_open_file_name() const;
 
