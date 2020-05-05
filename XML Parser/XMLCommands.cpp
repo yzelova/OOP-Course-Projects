@@ -1,27 +1,13 @@
 #include "XMLCommands.hpp"
 #include <iostream>
 
-//Rule of 3 - XMLCommand
-XMLCommand::XMLCommand(XMLTree *tree) : m_tree{tree->clone()}
+//Ctors
+XMLCommand::XMLCommand(XMLTree *tree) : m_tree{tree}
 {
-}
-XMLCommand &XMLCommand::operator=(const XMLCommand &other)
-{
-    XMLCommand temp{other};
-    std::swap(temp.m_tree, m_tree);
-    return *this;
-}
-XMLCommand::XMLCommand(const XMLCommand &other) : m_tree{other.m_tree->clone()}
-{
-}
-XMLCommand::~XMLCommand()
-{
-    delete m_tree;
 }
 
-//Ctors
-XMLOpenCommand::XMLOpenCommand(const String &file_name, XMLTree *tree) : OpenCommand(file_name),
-                                                                         XMLCommand(tree)
+XMLOpenCommand::XMLOpenCommand(const String &file_name, XMLTree *tree) : OpenCommand{file_name},
+                                                                         XMLCommand{tree}
 {
 }
 
@@ -33,8 +19,58 @@ XMLSaveCommand::XMLSaveCommand(XMLTree *tree) : XMLCommand(tree)
 {
 }
 
-XMLSaveAsCommand::XMLSaveAsCommand(const String &file_name, XMLTree *tree) : SaveAsCommand(file_name),
-                                                                             XMLCommand(tree)
+XMLSaveAsCommand::XMLSaveAsCommand(const String &file_name, XMLTree *tree) : SaveAsCommand{file_name},
+                                                                             XMLCommand{tree}
+{
+}
+
+XMLPrintCommand::XMLPrintCommand(XMLTree *tree) : XMLCommand{tree}
+{
+}
+
+XMLSelectCommand::XMLSelectCommand(XMLTree *tree, const String &id, const String &key) : XMLCommand{tree},
+                                                                                         m_id{id},
+                                                                                         m_key{key}
+{
+}
+
+XMLSetCommand::XMLSetCommand(XMLTree *tree, const String &id, const String &key, const String &value) : XMLCommand{tree},
+                                                                                                        m_id{id},
+                                                                                                        m_key{key},
+                                                                                                        m_value{value}
+{
+}
+
+XMLChildrenCommand::XMLChildrenCommand(XMLTree *tree, const String &id) : XMLCommand{tree},
+                                                                          m_id{id}
+{
+}
+
+XMLChildCommand::XMLChildCommand(XMLTree *tree, const String &id, size_t n) : XMLCommand{tree},
+                                                                              m_id{id},
+                                                                              m_n{n}
+{
+}
+
+XMLTextCommand::XMLTextCommand(XMLTree *tree, const String &id) : XMLCommand{tree},
+                                                                  m_id{id}
+{
+}
+
+XMLNewChildCommand::XMLNewChildCommand(XMLTree *tree, const String &id) : XMLCommand{tree},
+                                                                          m_id{id}
+{
+}
+
+XMLDeleteCommand::XMLDeleteCommand(XMLTree *tree, const String &id, const String &key) : XMLCommand{tree},
+                                                                                         m_id{id},
+                                                                                         m_key{key}
+{
+}
+
+XMLXPathCommand::XMLXPathCommand(XMLTree *tree, const String &id, const String &xpath) : XMLCommand{tree},
+                                                                                         m_id{id},
+                                                                                         m_xpath{xpath}
 {
 }
 
@@ -42,10 +78,10 @@ XMLSaveAsCommand::XMLSaveAsCommand(const String &file_name, XMLTree *tree) : Sav
 void XMLOpenCommand::execute()
 {
     String file_name = get_file_name();
-    std::ifstream in{file_name};
+    // std::ifstream in{file_name};
     m_tree->set_open_file_name(file_name);
-    m_tree->parse(in);
-    in.close();
+    // m_tree->parse(in);
+    // in.close();
 }
 
 void XMLCloseCommand::execute()
@@ -66,4 +102,63 @@ void XMLSaveAsCommand::execute()
 void XMLHelpCommand::execute()
 {
     //TO-DO: Instructions
+}
+
+void XMLPrintCommand::execute()
+{
+    std::cout << *m_tree << std::endl;
+}
+
+void XMLSelectCommand::execute()
+{
+    //TO-DO
+    // Select Element: XMLElement element = m_tree->select_element(id, key);
+    // Print Element: std::cout<<element<<std::endl;
+}
+
+void XMLSetCommand::execute()
+{
+    //TO-DO
+    //Set Element
+}
+
+void XMLChildrenCommand::execute()
+{
+    //TO-DO
+    //Get Children: vector<XMLElement> children = m_tree->get_children(id);
+    //override vector<XMLElement> << operator
+    //std::cout << children;
+}
+
+void XMLChildCommand::execute()
+{
+    //TO-DO
+    //Get Child: Element child = m_tree->get_child(id, n);
+    //std::cout << child;
+}
+
+void XMLTextCommand::execute()
+{
+    //TO-DO
+    //Get Text: String text = m_tree->get_text(id);
+    //std::cout << text;
+}
+
+void XMLNewChildCommand::execute()
+{
+    //TO-DO
+    //Create Child: select element & element.create_child();
+}
+
+void XMLDeleteCommand::execute()
+{
+    //TO-DO
+    //Delete Attribute: select element & element.delete_attribute();
+}
+
+void XMLXPathCommand::execute()
+{
+    //TO-DO
+    //Get Elements: slelect element & vector<XMLElement> elements = element.xpath();
+    //std::cout << elements;
 }

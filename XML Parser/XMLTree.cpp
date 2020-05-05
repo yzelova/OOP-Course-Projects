@@ -1,16 +1,13 @@
 #include "XMLTree.hpp"
+#include <iostream>
 
 XMLTree::XMLTree(const String &file_name) : open_file_name{file_name}
 {
-    //TO-DO: reconstruct ctor
-}
-XMLTree *XMLTree::clone() const
-{
-    return new XMLTree{open_file_name};
 }
 
 void XMLTree::erase()
 {
+    open_file_name = "";
     //TO-DO: Deleting active tree
 }
 
@@ -39,4 +36,9 @@ void XMLTree::save_as(const String &file_name)
 {
     set_open_file_name(file_name);
     save();
+}
+
+std::ostream &operator<<(std::ostream &out, const XMLTree &)
+{
+    return out;
 }

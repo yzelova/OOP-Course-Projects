@@ -72,3 +72,9 @@ public:
     virtual void execute() final;
     virtual ~ExitCommand() = default;
 };
+
+class PrintCommand : public ICommand
+{
+public:
+    virtual ~PrintCommand() = default;
+};

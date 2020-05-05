@@ -11,6 +11,10 @@ void Core::start()
         ICommand *cmd = parser.parse_command();
         cmd->execute();
         if (dynamic_cast<const ExitCommand *>(cmd) != nullptr)
+        {
+            delete cmd;
             break;
+        }
+        delete cmd;
     }
 }
