@@ -13,7 +13,7 @@ void XMLTree::erase()
 
 void XMLTree::parse(std::istream &)
 {
-    //TO-DO: Parsing from stream to tree
+    XMLTree temp{};
 }
 
 void XMLTree::set_open_file_name(const String &file_name)
