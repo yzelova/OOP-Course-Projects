@@ -1,153 +1,184 @@
-#include "../Commands.hpp"
 #include "XMLTree.hpp"
+#include "ICommand.hpp"
 
 #pragma once
 
 class XMLCommand
 {
 public:
-    XMLCommand() = default;
-    XMLCommand(XMLTree *);
-    virtual ~XMLCommand() = default;
+	XMLCommand() = default;
+	XMLCommand(XMLTree*);
+	virtual ~XMLCommand() = default;
 
 protected:
-    XMLTree *m_tree;
+	XMLTree* m_tree;
 };
 
-class XMLOpenCommand : public OpenCommand, public XMLCommand
+class InvalidCommand : public ICommand
 {
 public:
-    XMLOpenCommand() = default;
-    XMLOpenCommand(const String &, XMLTree *);
-    virtual void execute() final;
-    virtual ~XMLOpenCommand() = default;
+	InvalidCommand() = default;
+	InvalidCommand(const String&);
+	virtual void execute() final;
+
+private:
+	String m_message{ "Invalid operation." };
 };
 
-class XMLCloseCommand : public CloseCommand, public XMLCommand
+class ExitCommand : public ICommand
 {
 public:
-    XMLCloseCommand() = default;
-    XMLCloseCommand(XMLTree *);
-    virtual void execute() final;
-    virtual ~XMLCloseCommand() = default;
+	ExitCommand() = default;
+	virtual void execute() final;
 };
 
-class XMLSaveCommand : public SaveCommand, public XMLCommand
+class XMLOpenCommand : public ICommand,
+	public XMLCommand
 {
 public:
-    XMLSaveCommand() = default;
-    XMLSaveCommand(XMLTree *);
-    virtual void execute() final;
-    virtual ~XMLSaveCommand() = default;
+	XMLOpenCommand() = default;
+	XMLOpenCommand(const String&, XMLTree*);
+	virtual void execute() final;
+	virtual ~XMLOpenCommand() = default;
+
+	String get_file_name() const;
+	void set_file_name(const String&);
+
+private:
+	String m_file_name;
 };
 
-class XMLSaveAsCommand : public SaveAsCommand, public XMLCommand
+class XMLCloseCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLSaveAsCommand() = default;
-    XMLSaveAsCommand(const String &, XMLTree *);
-    virtual void execute() final;
-    virtual ~XMLSaveAsCommand() = default;
+	XMLCloseCommand() = default;
+	XMLCloseCommand(XMLTree*);
+	virtual void execute() final;
+	virtual ~XMLCloseCommand() = default;
 };
 
-class XMLHelpCommand : public HelpCommand
+class XMLSaveCommand : public ICommand, public XMLCommand
 {
 public:
-    virtual void execute() final;
-    virtual ~XMLHelpCommand() = default;
+	XMLSaveCommand() = default;
+	XMLSaveCommand(XMLTree*);
+	virtual void execute() final;
+	virtual ~XMLSaveCommand() = default;
 };
 
-class XMLPrintCommand : public PrintCommand, public XMLCommand
+class XMLSaveAsCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLPrintCommand() = default;
-    XMLPrintCommand(XMLTree *);
-    virtual void execute() final;
-    virtual ~XMLPrintCommand() = default;
+	XMLSaveAsCommand() = default;
+	XMLSaveAsCommand(const String&, XMLTree*);
+	virtual void execute() final;
+	virtual ~XMLSaveAsCommand() = default;
+
+	String get_file_name() const;
+	void set_file_name(const String&);
+
+private:
+	String m_file_name;
+};
+
+class XMLHelpCommand : public ICommand
+{
+public:
+	virtual void execute() final;
+	virtual ~XMLHelpCommand() = default;
+};
+
+class XMLPrintCommand : public ICommand, public XMLCommand
+{
+public:
+	XMLPrintCommand() = default;
+	XMLPrintCommand(XMLTree*);
+	virtual void execute() final;
+	virtual ~XMLPrintCommand() = default;
 };
 
 class XMLSelectCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLSelectCommand(XMLTree *, const String &, const String &);
-    virtual void execute() final;
+	XMLSelectCommand(XMLTree*, const String&, const String&);
+	virtual void execute() final;
 
 private:
-    String m_id{};
-    String m_key{};
+	String m_id{};
+	String m_key{};
 };
 
 class XMLSetCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLSetCommand(XMLTree *, const String &, const String &, const String &);
-    virtual void execute() final;
+	XMLSetCommand(XMLTree*, const String&, const String&, const String&);
+	virtual void execute() final;
 
 private:
-    String m_id{};
-    String m_key{};
-    String m_value{};
+	String m_id{};
+	String m_key{};
+	String m_value{};
 };
 
 class XMLChildrenCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLChildrenCommand(XMLTree *, const String &);
-    virtual void execute() final;
+	XMLChildrenCommand(XMLTree*, const String&);
+	virtual void execute() final;
 
 private:
-    String m_id{};
+	String m_id{};
 };
 
 class XMLChildCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLChildCommand(XMLTree *, const String &, size_t);
-    virtual void execute() final;
+	XMLChildCommand(XMLTree*, const String&, size_t);
+	virtual void execute() final;
 
 private:
-    String m_id{};
-    size_t m_n{};
+	String m_id{};
+	size_t m_n{};
 };
 
 class XMLTextCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLTextCommand(XMLTree *, const String &);
-    virtual void execute() final;
+	XMLTextCommand(XMLTree*, const String&);
+	virtual void execute() final;
 
 private:
-    String m_id{};
+	String m_id{};
 };
 
 class XMLDeleteCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLDeleteCommand(XMLTree *, const String &, const String &);
-    virtual void execute() final;
+	XMLDeleteCommand(XMLTree*, const String&, const String&);
+	virtual void execute() final;
 
 private:
-    String m_id{};
-    String m_key{};
+	String m_id{};
+	String m_key{};
 };
 
 class XMLNewChildCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLNewChildCommand(XMLTree *, const String &);
-    virtual void execute() final;
+	XMLNewChildCommand(XMLTree*, const String&);
+	virtual void execute() final;
 
 private:
-    String m_id{};
+	String m_id{};
 };
 
 class XMLXPathCommand : public ICommand, public XMLCommand
 {
 public:
-    XMLXPathCommand(XMLTree *, const String &, const String &);
-    virtual void execute() final;
+	XMLXPathCommand(XMLTree*, const String&, const String&);
+	virtual void execute() final;
 
 private:
-    String m_id{};
-    String m_xpath{};
+	String m_id{};
+	String m_xpath{};
 };

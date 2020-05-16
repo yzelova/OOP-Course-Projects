@@ -7,8 +7,8 @@ using FileStream = std::fstream;
 class Core
 {
 public:
-    void start();
+	void start();
 
 private:
-    XMLTree m_tree{};
+	XMLTree m_tree{};
 };

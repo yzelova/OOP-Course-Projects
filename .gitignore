@@ -1,4 +1,5 @@
 .vscode
 *.o
 *.exe
-makefile.win
+.vs
+Makefile

@@ -1,9 +1,8 @@
-
 #include <string>
 #include <vector>
-#include "../KeyValuePair.hpp"
 
 using String = std::string;
+using Pair = std::pair<String, String>;
 
 template <typename T>
 using Vector = std::vector<T>;
@@ -13,10 +12,23 @@ using Vector = std::vector<T>;
 class XMLElement
 {
 public:
+	XMLElement() = default;
+	XMLElement(const String&, const Vector<Pair>&, const Vector<XMLElement>&, const String&);
+
+	String get_name() const;
+	Vector<Pair> get_attributes() const;
+
+	void set_name(const String&);
+	void add_attribute(const Pair&);
+
+	void print(size_t) const;
+	void print_tabs(size_t) const;
+
+	XMLElement* clone() const;
+
 private:
-    String name;
-    Vector<KeyValuePair> attributes;
-    Vector<XMLElement> children;
-    String id;
-    String text;
+	String m_name{};
+	Vector<Pair> m_attributes{};
+	Vector<XMLElement> m_elements{};
+	String m_text{};
 };
