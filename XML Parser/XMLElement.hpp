@@ -20,6 +20,9 @@ public:
 
 	void set_name(const String&);
 	void add_attribute(const Pair&);
+	void set_id(Vector<String>&);
+
+	String get_unique_id(Vector<String>& past_ids, String);
 
 	void print(size_t) const;
 	void print_tabs(size_t) const;
@@ -31,4 +34,5 @@ private:
 	Vector<Pair> m_attributes{};
 	Vector<XMLElement> m_elements{};
 	String m_text{};
+	String m_id{};
 };

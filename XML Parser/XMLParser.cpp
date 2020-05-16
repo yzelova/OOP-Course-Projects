@@ -28,6 +28,7 @@ void XMLParser::parse(XMLTree* tree)
 	else
 	{
 		tree->set_root(element.value());
+		tree->set_ids();
 	}
 }
 
@@ -201,7 +202,7 @@ std::optional<std::variant<String, XMLElement>> XMLParser::parse_content(size_t 
 	}
 	else
 	{
-		std::optional <String> text = parse_string(updated_position, {' ', '<'}, {'>', '\/', '='});
+		std::optional <String> text = parse_string(updated_position, {' ', '<'}, {'>', '/', '='});
 		
 		if (!text)return {};
 		return text.value();
@@ -210,12 +211,12 @@ std::optional<std::variant<String, XMLElement>> XMLParser::parse_content(size_t 
 
 std::optional<String> XMLParser::parse_closing_tag(size_t position, const String& name)
 {
-	if (content[updated_position] != '<' || content[updated_position+1] != '\/')return {};
+	if (content[updated_position] != '<' || content[updated_position+1] != '/')return {};
 	update_position(updated_position + 2);
 
 	parse_whitespace(updated_position);
 
-	std::optional<String> tag_name = parse_string(updated_position, {' ', '>'}, {'\"', '=', '\/'});
+	std::optional<String> tag_name = parse_string(updated_position, {' ', '>'}, {'\"', '=', '/'});
 	if (!tag_name || tag_name!=name)return{};
 
 	parse_whitespace(updated_position);

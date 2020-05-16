@@ -39,6 +39,11 @@ void XMLTree::set_root(const XMLElement& root)
 	m_root = root;
 }
 
+void XMLTree::set_ids()
+{
+	m_root.set_id(ids);
+}
+
 //TO-DO: more getters&setters
 
 void XMLTree::save()

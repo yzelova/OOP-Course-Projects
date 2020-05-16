@@ -17,6 +17,7 @@ public:
 	void save_as(const String&);
 	
 	void set_root(const XMLElement&);
+	void set_ids();
 
 	void print() const;
 
@@ -27,5 +28,6 @@ public:
 
 private:
 	String open_file_name{ "" };
+	Vector<String> ids{};
 	XMLElement m_root{};
 };
