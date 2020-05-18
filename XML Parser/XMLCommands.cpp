@@ -1,4 +1,5 @@
 #include "XMLCommands.hpp"
+#include "XPathParser.hpp"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -300,7 +301,7 @@ void XMLDeleteCommand::execute()
 
 void XMLXPathCommand::execute()
 {
-	//TO-DO
-	//Get Elements: slelect element & vector<XMLElement> elements = element.xpath();
-	//std::cout << elements;
+	XMLElement el = m_tree->get_element_by_id(m_id);
+	XPathParser parser{ el, m_xpath };
+	parser.parse();
 }

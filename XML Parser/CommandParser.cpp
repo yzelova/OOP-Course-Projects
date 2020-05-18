@@ -99,6 +99,14 @@ XMLCommand* CommandParser::parse_command()
 		String key{ find_string(pos) };
 		return new XMLDeleteCommand{ m_tree, id, key };
 	}
+	if (operation == "xpath")
+	{
+		pos = find_next_pos(pos + operation.length());
+		String id{ find_string(pos) };
+		pos = find_next_pos(pos + id.length());
+		String xpath{ find_string(pos) };
+		return new XMLXPathCommand{ m_tree, id, xpath };
+	}
 
 	//TO-DO: XML Commands Parse
 

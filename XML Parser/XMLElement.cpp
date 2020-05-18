@@ -100,6 +100,16 @@ String XMLElement::get_attribute_by_key(const String& key) const
 	if (value_itr == m_attributes.end()) return {};
 	else return value_itr->second;
 }
+Vector<XMLElement> XMLElement::get_children_by_name(const String& name) const
+{
+	Vector<XMLElement> rt;
+	rt.resize(m_elements.size());
+	std::copy_if(m_elements.begin(), m_elements.end(), rt.begin(), [&name](const XMLElement& el)
+	{
+		return el.get_name().compare(name) == 0;
+	});
+	return rt;
+}
 
 //mutators
 void XMLElement::set_name(const String& name)
@@ -164,10 +174,10 @@ String XMLElement::get_unique_id( String id)
 		{
 			if (std::find(ids.begin(),
 						  ids.end(), 
-						  std::to_string(i)) == ids.end())
+						  "_"+std::to_string(i)) == ids.end())
 			{
-				ids.push_back(std::to_string(i));
-				return std::to_string(i);
+				ids.push_back("_" + std::to_string(i));
+				return "_" + std::to_string(i);
 			}
 		}
 	}

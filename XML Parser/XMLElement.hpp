@@ -17,14 +17,19 @@ public:
 	XMLElement() = default;
 	XMLElement(const String&, const Vector<Pair>&, const Vector<XMLElement>&, const String&);
 
+	//accessors
 	String get_name() const;
 	Vector<Pair> get_attributes() const;
 	Vector<XMLElement> get_children() const;
 	String get_text() const;
 	String get_id() const;
 	String get_attribute_by_key(const String&) const;
+	Vector<XMLElement> get_children_by_name(const String&) const;
+
+	//!!!pass by reference
 	XMLElement& get_child_element_by_id(const String& id);
 
+	//mutators
 	void set_name(const String&);
 	void add_attribute(const Pair&);
 	void set_id(); 
