@@ -138,20 +138,26 @@ void XMLHelpCommand::execute()
 
 void XMLPrintCommand::execute()
 {
-	std::cout << *m_tree << std::endl;
+	if (!m_tree->empty())
+	{
+		std::cout << *m_tree;
+	}
+	else
+	{
+		InvalidCommand cmd{ "No file is currently open." };
+		cmd.execute();
+	}
 }
 
 void XMLSelectCommand::execute()
 {
-	//TO-DO
-	// Select Element: XMLElement element = m_tree->select_element(id, key);
-	// Print Element: std::cout<<element<<std::endl;
+	auto element = m_tree->get_element_by_id(m_id);
+	auto attr_value = element.get_attribute_by_key(m_key);
+	std::cout << "Attribute \"" << m_key << "\" value: " << attr_value << std::endl;
 }
 
 void XMLSetCommand::execute()
 {
-	//TO-DO
-	//Set Element
 }
 
 void XMLChildrenCommand::execute()

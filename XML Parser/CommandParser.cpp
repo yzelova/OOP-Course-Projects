@@ -11,7 +11,7 @@ m_tree{ tree }
 {
 }
 
-ICommand* CommandParser::parse_command()
+XMLCommand* CommandParser::parse_command()
 {
 	size_t pos{ find_next_pos(0) };
 	String operation{ find_string(pos) };

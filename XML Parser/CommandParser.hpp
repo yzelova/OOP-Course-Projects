@@ -12,7 +12,7 @@ public:
 	CommandParser(const String&, XMLTree*);
 	virtual ~CommandParser() = default;
 
-	ICommand* parse_command();
+	XMLCommand* parse_command();
 
 private:
 	XMLTree* m_tree{};

@@ -6,15 +6,11 @@ XMLTree::XMLTree(const String& file_name) : open_file_name{ file_name }
 {
 }
 
-void XMLTree::print() const
-{
-	m_root.print(0);
-}
-
 void XMLTree::erase()
 {
 	open_file_name = "";
-	//TO-DO: Deleting active tree
+	ids.clear();
+	m_root = XMLElement{};
 }
 
 void XMLTree::parse(std::istream& in)
@@ -22,7 +18,6 @@ void XMLTree::parse(std::istream& in)
 	XMLParser parser{};
 	parser.read(in);
 	parser.parse(this);
-	print();
 }
 
 void XMLTree::set_open_file_name(const String& file_name)
@@ -44,7 +39,16 @@ void XMLTree::set_ids()
 	m_root.set_id(ids);
 }
 
-//TO-DO: more getters&setters
+bool XMLTree::empty() const
+{
+	return ids.empty();
+}
+
+XMLElement XMLTree::get_element_by_id(const String& id)
+{
+	return m_root.find_ancestor_by_id(id);
+}
+
 
 void XMLTree::save()
 {
@@ -57,7 +61,8 @@ void XMLTree::save_as(const String& file_name)
 	save();
 }
 
-std::ostream& operator<<(std::ostream& out, const XMLTree&)
+std::ostream& operator<<(std::ostream& out, const XMLTree& tree)
 {
+	out << tree.m_root;
 	return out;
 }

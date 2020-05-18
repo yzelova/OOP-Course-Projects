@@ -8,7 +8,7 @@ void Core::start()
 	while (std::getline(std::cin, line))
 	{
 		CommandParser parser{ line, &m_tree };
-		ICommand* cmd = parser.parse_command();
+		XMLCommand* cmd = parser.parse_command();
 		cmd->execute();
 		if (dynamic_cast<const ExitCommand*>(cmd) != nullptr)
 		{

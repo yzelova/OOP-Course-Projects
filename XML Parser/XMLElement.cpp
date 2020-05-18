@@ -2,6 +2,7 @@
 #include<iostream>
 #include<algorithm>
 
+
 //ctor
 XMLElement::XMLElement(const String& name, 
 					   const Vector<Pair>& attributes, 
@@ -18,8 +19,22 @@ void XMLElement::print_tabs(size_t depth) const
 {
 	for (int i = 0; i < depth; i++)
 	{
-		std::cout << '\t';
+		std::cout << "  ";
 	}
+}
+
+XMLElement* XMLElement::get_by_id(const String& id)
+{
+	if (m_id.compare(id) == 0)
+	{
+		return  this;
+	}
+	auto el = std::find_if(m_elements.begin(), m_elements.end(), [&id](XMLElement& el) -> bool {
+		auto res = el.get_by_id(id);
+		return res != nullptr;
+	});
+	if (el == m_elements.end()) return nullptr;
+	return &*el;
 }
 
 void XMLElement::print(size_t depth) const
@@ -58,6 +73,18 @@ String XMLElement::get_name() const
 Vector<Pair> XMLElement::get_attributes() const
 {
 	return m_attributes;
+}
+String XMLElement::get_attribute_by_key(const String& key) const
+{
+	auto value_itr = std::find_if(m_attributes.begin(), m_attributes.end(), [&key](const Pair& attr) {
+		return attr.first.compare(key) == 0;
+	});
+	if (value_itr == m_attributes.end()) return {};
+	else return value_itr->second;
+}
+XMLElement XMLElement::find_ancestor_by_id(const String& id) 
+{
+	return *(get_by_id(id));
 }
 
 //mutators
@@ -130,4 +157,10 @@ String XMLElement::get_unique_id(Vector<String>& past_ids, String id)
 XMLElement* XMLElement::clone() const
 {
 	return new XMLElement{ *this };
+}
+
+std::ostream& operator<<(std::ostream& out, const XMLElement& el)
+{
+	el.print(0);
+	return out;
 }

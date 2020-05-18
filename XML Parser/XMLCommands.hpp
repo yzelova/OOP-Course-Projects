@@ -1,5 +1,4 @@
 #include "XMLTree.hpp"
-#include "ICommand.hpp"
 
 #pragma once
 
@@ -8,13 +7,14 @@ class XMLCommand
 public:
 	XMLCommand() = default;
 	XMLCommand(XMLTree*);
+	virtual void execute() = 0;
 	virtual ~XMLCommand() = default;
 
 protected:
-	XMLTree* m_tree;
+	XMLTree* m_tree{};
 };
 
-class InvalidCommand : public ICommand
+class InvalidCommand : public XMLCommand
 {
 public:
 	InvalidCommand() = default;
@@ -25,15 +25,14 @@ private:
 	String m_message{ "Invalid operation." };
 };
 
-class ExitCommand : public ICommand
+class ExitCommand : public XMLCommand
 {
 public:
 	ExitCommand() = default;
 	virtual void execute() final;
 };
 
-class XMLOpenCommand : public ICommand,
-	public XMLCommand
+class XMLOpenCommand : public XMLCommand
 {
 public:
 	XMLOpenCommand() = default;
@@ -48,7 +47,7 @@ private:
 	String m_file_name;
 };
 
-class XMLCloseCommand : public ICommand, public XMLCommand
+class XMLCloseCommand : public XMLCommand
 {
 public:
 	XMLCloseCommand() = default;
@@ -57,7 +56,7 @@ public:
 	virtual ~XMLCloseCommand() = default;
 };
 
-class XMLSaveCommand : public ICommand, public XMLCommand
+class XMLSaveCommand : public XMLCommand
 {
 public:
 	XMLSaveCommand() = default;
@@ -66,7 +65,7 @@ public:
 	virtual ~XMLSaveCommand() = default;
 };
 
-class XMLSaveAsCommand : public ICommand, public XMLCommand
+class XMLSaveAsCommand : public XMLCommand
 {
 public:
 	XMLSaveAsCommand() = default;
@@ -81,14 +80,14 @@ private:
 	String m_file_name;
 };
 
-class XMLHelpCommand : public ICommand
+class XMLHelpCommand : public XMLCommand
 {
 public:
 	virtual void execute() final;
 	virtual ~XMLHelpCommand() = default;
 };
 
-class XMLPrintCommand : public ICommand, public XMLCommand
+class XMLPrintCommand : public XMLCommand
 {
 public:
 	XMLPrintCommand() = default;
@@ -97,7 +96,7 @@ public:
 	virtual ~XMLPrintCommand() = default;
 };
 
-class XMLSelectCommand : public ICommand, public XMLCommand
+class XMLSelectCommand : public XMLCommand
 {
 public:
 	XMLSelectCommand(XMLTree*, const String&, const String&);
@@ -108,7 +107,7 @@ private:
 	String m_key{};
 };
 
-class XMLSetCommand : public ICommand, public XMLCommand
+class XMLSetCommand : public XMLCommand
 {
 public:
 	XMLSetCommand(XMLTree*, const String&, const String&, const String&);
@@ -120,7 +119,7 @@ private:
 	String m_value{};
 };
 
-class XMLChildrenCommand : public ICommand, public XMLCommand
+class XMLChildrenCommand : public XMLCommand
 {
 public:
 	XMLChildrenCommand(XMLTree*, const String&);
@@ -130,7 +129,7 @@ private:
 	String m_id{};
 };
 
-class XMLChildCommand : public ICommand, public XMLCommand
+class XMLChildCommand : public XMLCommand
 {
 public:
 	XMLChildCommand(XMLTree*, const String&, size_t);
@@ -141,7 +140,7 @@ private:
 	size_t m_n{};
 };
 
-class XMLTextCommand : public ICommand, public XMLCommand
+class XMLTextCommand : public XMLCommand
 {
 public:
 	XMLTextCommand(XMLTree*, const String&);
@@ -151,7 +150,7 @@ private:
 	String m_id{};
 };
 
-class XMLDeleteCommand : public ICommand, public XMLCommand
+class XMLDeleteCommand : public XMLCommand
 {
 public:
 	XMLDeleteCommand(XMLTree*, const String&, const String&);
@@ -162,7 +161,7 @@ private:
 	String m_key{};
 };
 
-class XMLNewChildCommand : public ICommand, public XMLCommand
+class XMLNewChildCommand : public XMLCommand
 {
 public:
 	XMLNewChildCommand(XMLTree*, const String&);
@@ -172,7 +171,7 @@ private:
 	String m_id{};
 };
 
-class XMLXPathCommand : public ICommand, public XMLCommand
+class XMLXPathCommand :  public XMLCommand
 {
 public:
 	XMLXPathCommand(XMLTree*, const String&, const String&);
