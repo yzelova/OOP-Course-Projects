@@ -167,7 +167,6 @@ template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 template<class... Ts> overloaded(Ts...)->overloaded<Ts...>;
 XMLContent XMLParser::parse_contents(size_t position, const String name)
 {	
-
 	auto el = parse_content(position, name);
 
 	if (!el) return {};

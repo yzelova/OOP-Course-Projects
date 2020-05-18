@@ -71,6 +71,34 @@ XMLCommand* CommandParser::parse_command()
 		String value{ find_string(pos) };
 		return new XMLSetCommand{ m_tree, id, key, value };
 	}
+	if (operation == "children")
+	{
+		pos = find_next_pos(pos + operation.length());
+		String id{ find_string(pos) };
+		return new XMLChildrenCommand{ m_tree, id };
+	}
+	if (operation == "child")
+	{
+		pos = find_next_pos(pos + operation.length());
+		String id{ find_string(pos) };
+		pos = find_next_pos(pos + id.length());
+		int n{ std::stoi(find_string(pos)) };
+		return new XMLChildCommand{ m_tree, id, n };
+	}
+	if (operation == "newchild")
+	{
+		pos = find_next_pos(pos + operation.length());
+		String id{ find_string(pos) };
+		return new XMLNewChildCommand{ m_tree, id };
+	}
+	if (operation == "delete")
+	{
+		pos = find_next_pos(pos + operation.length());
+		String id{ find_string(pos) };
+		pos = find_next_pos(pos + id.length());
+		String key{ find_string(pos) };
+		return new XMLDeleteCommand{ m_tree, id, key };
+	}
 
 	//TO-DO: XML Commands Parse
 

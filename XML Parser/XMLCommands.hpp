@@ -132,12 +132,12 @@ private:
 class XMLChildCommand : public XMLCommand
 {
 public:
-	XMLChildCommand(XMLTree*, const String&, size_t);
+	XMLChildCommand(XMLTree*, const String&, int);
 	virtual void execute() final;
 
 private:
 	String m_id{};
-	size_t m_n{};
+	int m_n{};
 };
 
 class XMLTextCommand : public XMLCommand

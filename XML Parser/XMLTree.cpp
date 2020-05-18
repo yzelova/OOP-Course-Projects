@@ -9,7 +9,6 @@ XMLTree::XMLTree(const String& file_name) : open_file_name{ file_name }
 void XMLTree::erase()
 {
 	open_file_name = "";
-	ids.clear();
 	m_root = XMLElement{};
 }
 
@@ -29,6 +28,11 @@ String XMLTree::get_open_file_name() const
 	return open_file_name;
 }
 
+XMLElement& XMLTree::get_element_by_id(const String& id)
+{
+	return m_root.get_child_element_by_id(id);
+}
+
 void XMLTree::set_root(const XMLElement& root)
 {
 	m_root = root;
@@ -36,19 +40,13 @@ void XMLTree::set_root(const XMLElement& root)
 
 void XMLTree::set_ids()
 {
-	m_root.set_id(ids);
+	m_root.set_id();
 }
 
 bool XMLTree::empty() const
 {
-	return ids.empty();
+	return open_file_name.empty();
 }
-
-XMLElement XMLTree::get_element_by_id(const String& id)
-{
-	return m_root.find_ancestor_by_id(id);
-}
-
 
 void XMLTree::save()
 {

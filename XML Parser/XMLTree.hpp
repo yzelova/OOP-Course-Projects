@@ -17,11 +17,12 @@ public:
 	void save_as(const String&);
 
 	bool empty() const;
-	
-	XMLElement get_element_by_id(const String&);
 
 	void set_root(const XMLElement&);
+
 	void set_ids();
+
+	XMLElement& get_element_by_id(const String&);
 
 	friend std::ostream& operator<<(std::ostream&, const XMLTree&);
 
@@ -31,6 +32,5 @@ public:
 private:
 
 	String open_file_name{ "" };
-	Vector<String> ids{};
 	XMLElement m_root{};
 };

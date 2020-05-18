@@ -18,15 +18,19 @@ public:
 	XMLElement(const String&, const Vector<Pair>&, const Vector<XMLElement>&, const String&);
 
 	String get_name() const;
-	Vector<Pair> get_attributes() const;	
-	
+	Vector<Pair> get_attributes() const;
+	Vector<XMLElement> get_children() const;
+	String get_text() const;
+	String get_id() const;
 	String get_attribute_by_key(const String&) const;
-	XMLElement find_ancestor_by_id(const String&); 
+	XMLElement& get_child_element_by_id(const String& id);
 
 	void set_name(const String&);
 	void add_attribute(const Pair&);
-	void set_id(Vector<String>&);
-	String get_unique_id(Vector<String>& past_ids, String);
+	void set_id(); 
+	void set_attribute_by_key(const String&, const String&);
+	void add_child();
+	void remove_attribute(const String&);
 
 	friend std::ostream& operator<<(std::ostream&, const XMLElement&);
 
@@ -34,6 +38,7 @@ public:
 
 private:
 	XMLElement* get_by_id(const String&);
+	String get_unique_id(String);
 	void print(size_t) const;
 	void print_tabs(size_t) const;
 
@@ -42,4 +47,6 @@ private:
 	Vector<XMLElement> m_elements{};
 	String m_text{};
 	String m_id{};
+
+	static Vector<String> ids;
 };
