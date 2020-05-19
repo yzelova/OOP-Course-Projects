@@ -299,9 +299,23 @@ void XMLDeleteCommand::execute()
 	
 }
 
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...)->overloaded<Ts...>;
 void XMLXPathCommand::execute()
 {
 	XMLElement el = m_tree->get_element_by_id(m_id);
 	XPathParser parser{ el, m_xpath };
-	parser.parse();
+	std::variant<Vector<XMLElement>, Vector<String>> rt = parser.parse();
+	
+	std::visit(overloaded{
+	[&parser](Vector<String> arg)-> void {
+		std::for_each(arg.begin(), arg.end(), [](const String& str) {
+			std::cout << str <<std::endl;
+		});
+	},
+	[&parser](Vector<XMLElement> arg)-> void {
+		std::for_each(arg.begin(), arg.end(), [](const XMLElement& el) {
+			std::cout << el;
+		});
+	} }, rt);
 }

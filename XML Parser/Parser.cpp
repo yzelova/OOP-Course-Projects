@@ -72,7 +72,7 @@ std::optional<String> Parser::parse_string(size_t position,
 	const Vector<char>& endpoint_characters,
 	const Vector<char>& invalid_characters)
 {
-	if (vector_contains(endpoint_characters, content[position]))
+	if (vector_contains(endpoint_characters, content[position]) || position == content.length())
 	{
 		update_position(position);
 		return "";

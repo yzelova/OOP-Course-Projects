@@ -26,6 +26,8 @@ public:
 	String get_attribute_by_key(const String&) const;
 	Vector<XMLElement> get_children_by_name(const String&) const;
 
+	bool has_child_with_text(const String&, const String&) const;
+
 	//!!!pass by reference
 	XMLElement& get_child_element_by_id(const String& id);
 

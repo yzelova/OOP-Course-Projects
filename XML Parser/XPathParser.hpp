@@ -1,13 +1,16 @@
+#pragma once
 #include "Parser.hpp"
 #include "XMLTree.hpp"
+#include <variant>
+#include <algorithm>
 
 struct XPathParser : public Parser
 {
 public:
 	XPathParser(const XMLElement&, const String& );
-	Vector<XMLElement> parse();
+	std::variant<Vector<XMLElement>, Vector<String>>  parse();
 private:
-	Vector<XMLElement> parse_from(size_t position);
+	std::variant<Vector<XMLElement>, Vector<String>>  parse_from(Vector<XMLElement>, size_t);
 	XMLElement m_element{};
 	String m_query{};
 };

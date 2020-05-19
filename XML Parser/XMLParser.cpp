@@ -142,7 +142,7 @@ std::optional<std::variant<String, XMLElement>> XMLParser::parse_content(size_t 
 	}
 	else
 	{
-		std::optional <String> text = parse_string(updated_position, {' ', '<'}, {'>', '/', '='});
+		std::optional <String> text = parse_string(updated_position, {'<'}, {'>', '/', '='});
 		
 		if (!text)return {};
 		return text.value();

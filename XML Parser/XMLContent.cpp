@@ -2,7 +2,7 @@
 
 void XMLContent::concat_text(const String& text)
 {
-	m_text = text + " " + m_text;
+	m_text = text + m_text;
 }
 
 void XMLContent::add_element(const XMLElement& element)

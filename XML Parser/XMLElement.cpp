@@ -103,12 +103,18 @@ String XMLElement::get_attribute_by_key(const String& key) const
 Vector<XMLElement> XMLElement::get_children_by_name(const String& name) const
 {
 	Vector<XMLElement> rt;
-	rt.resize(m_elements.size());
-	std::copy_if(m_elements.begin(), m_elements.end(), rt.begin(), [&name](const XMLElement& el)
+	std::for_each(m_elements.begin(), m_elements.end(), [&rt, &name](const XMLElement& el)
 	{
-		return el.get_name().compare(name) == 0;
+		if (el.get_name().compare(name) == 0)rt.push_back(el);
 	});
 	return rt;
+}
+bool XMLElement::has_child_with_text(const String& name, const String& text) const
+{
+	auto itr = std::find_if(m_elements.begin(), m_elements.end(), [&text, &name](const XMLElement& el) {
+		return el.get_text().compare(text) == 0 && el.get_name().compare(name) == 0;
+	});
+	return itr != m_elements.end();
 }
 
 //mutators
