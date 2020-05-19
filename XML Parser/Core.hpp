@@ -1,6 +1,7 @@
+#pragma once
 #include "XMLTree.hpp"
 #include <fstream>
-#pragma once
+
 
 using FileStream = std::fstream;
 

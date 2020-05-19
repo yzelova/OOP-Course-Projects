@@ -1,8 +1,7 @@
-#include "XMLCommands.hpp"
+#pragma once
+#include "XMLCommand.hpp"
 #include "XMLTree.hpp"
 #include "Parser.hpp"
-
-#pragma once
 
 using String = std::string;
 

@@ -1,5 +1,7 @@
 #include "Core.hpp"
 #include "CommandParser.hpp"
+#include "ExitCommand.hpp"
+
 #include <iostream>
 
 void Core::start()

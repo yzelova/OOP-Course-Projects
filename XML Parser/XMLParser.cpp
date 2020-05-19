@@ -1,5 +1,6 @@
 #include "XMLParser.hpp"
-#include "XMLCommands.hpp"
+#include "XMLCommand.hpp"
+#include "InvalidCommand.hpp"
 #include<cstdio>
 #include<cctype>
 #include<algorithm>

@@ -1,3 +1,4 @@
+#pragma once
 #include "XMLTree.hpp"
 #include "Parser.hpp"
 #include "XMLContent.hpp"
