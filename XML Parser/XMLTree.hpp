@@ -25,7 +25,7 @@ public:
 
 	XMLElement& get_element_by_id(const String&);
 
-	friend std::ostream& operator<<(std::ostream&, const XMLTree&);
+	friend std::ostream& operator<<(std::ostream&, const XMLTree&); 
 
 	void set_open_file_name(const String&);
 	String get_open_file_name() const;

@@ -16,11 +16,11 @@ XMLElement::XMLElement(const String& name,
 
 }
 
-void XMLElement::print_tabs(size_t depth) const
+void XMLElement::print_tabs(size_t depth, std::ostream& out) const
 {
 	for (int i = 0; i < depth; i++)
 	{
-		std::cout << "  ";
+		out << "  ";
 	}
 }
 
@@ -38,30 +38,30 @@ XMLElement* XMLElement::get_by_id(const String& id)
 	return &*el;
 }
 
-void XMLElement::print(size_t depth) const
+void XMLElement::print(size_t depth, std::ostream& out) const
 {
-	print_tabs(depth);
-	std::cout << "Tag Name: " << get_name() << std::endl;
-	print_tabs(depth);
-	std::cout << "ID: " << m_id << std::endl;
+	print_tabs(depth, out);
+	out << "Tag Name: " << get_name() << std::endl;
+	print_tabs(depth, out);
+	out << "ID: " << m_id << std::endl;
 	if (!m_attributes.empty())
 	{
-		print_tabs(depth);
-		std::cout << "Attributes: ";
-		std::for_each(m_attributes.rbegin(), m_attributes.rend(), [](const Pair& attr)
+		print_tabs(depth, out);
+		out << "Attributes: ";
+		std::for_each(m_attributes.rbegin(), m_attributes.rend(), [&out](const Pair& attr)
 		{
-			std::cout << attr.first << "=" << attr.second << " ";
+			out << attr.first << "=" << attr.second << " ";
 		});
-		std::cout << std::endl;
+		out << std::endl;
 	}
 	if (!m_text.empty())
 	{
-		print_tabs(depth);
-		std::cout << "Text: " << m_text << std::endl;
+		print_tabs(depth, out);
+		out << "Text: " << m_text << std::endl;
 	}
-	std::for_each(m_elements.rbegin(), m_elements.rend(), [&depth](const XMLElement& el)
+	std::for_each(m_elements.rbegin(), m_elements.rend(), [&depth, &out](const XMLElement& el)
 	{
-		el.print(depth + 1);
+		el.print(depth + 1, out);
 	});
 }
 
@@ -74,7 +74,7 @@ XMLElement& XMLElement::get_child_element_by_id(const String& id)
 //accessors
 String XMLElement::get_name() const
 {
-	return m_name.empty() ? "<empty>" : m_name;
+	return m_name;
 }
 Vector<Pair> XMLElement::get_attributes() const
 {
@@ -218,6 +218,26 @@ XMLElement* XMLElement::clone() const
 
 std::ostream& operator<<(std::ostream& out, const XMLElement& el)
 {
-	el.print(0);
+	el.print(0, out);
 	return out;
+}
+
+void XMLElement::print_in_xml(size_t depth, std::ostream& out) const
+{
+	print_tabs(depth, out);
+	out << "<" << m_name << " id=\""<<m_id<<"\"";
+	std::for_each(m_attributes.begin(), m_attributes.end(), [&out](const Pair& p) {
+		out << " " << p.first << "=" << p.second;
+	});
+	out << ">" << std::endl;
+	if (!m_text.empty())
+	{
+		print_tabs(depth, out);
+		out << m_text << std::endl;
+	}
+	std::for_each(m_elements.begin(), m_elements.end(), [&depth, &out](const XMLElement& el) {
+		el.print_in_xml(depth + 1, out);
+	});
+	print_tabs(depth, out);
+	out << "</" << m_name << ">" << std::endl;
 }

@@ -41,16 +41,17 @@ public:
 	void remove_attribute(const String&);
 
 	friend std::ostream& operator<<(std::ostream&, const XMLElement&);
+	void print_in_xml(size_t, std::ostream&) const;
 
 	XMLElement* clone() const;
 
 private:
 	XMLElement* get_by_id(const String&);
 	String get_unique_id(String);
-	void print(size_t) const;
-	void print_tabs(size_t) const;
+	void print(size_t, std::ostream&) const;
+	void print_tabs(size_t, std::ostream&) const;
 
-	String m_name{};
+	String m_name{"empty"};
 	Vector<Pair> m_attributes{};
 	Vector<XMLElement> m_elements{};
 	String m_text{};

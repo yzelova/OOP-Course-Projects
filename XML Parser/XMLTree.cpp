@@ -1,6 +1,7 @@
 #include "XMLTree.hpp"
 #include "XMLParser.hpp"
 #include <iostream>
+#include <fstream>
 
 XMLTree::XMLTree(const String& file_name) : open_file_name{ file_name }
 {
@@ -50,7 +51,8 @@ bool XMLTree::empty() const
 
 void XMLTree::save()
 {
-	//TO-DO: write to current file
+	std::ofstream out{ open_file_name };
+	m_root.print_in_xml(0, out);
 }
 
 void XMLTree::save_as(const String& file_name)
