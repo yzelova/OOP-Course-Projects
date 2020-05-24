@@ -13,6 +13,7 @@ void XMLDeleteCommand::execute()
 	{
 		XMLElement& el = m_tree->get_element_by_id(m_id);
 		el.remove_attribute(m_key);
+		std::cout << "Successfully deleted attribute.\n";
 	}
 	else
 	{

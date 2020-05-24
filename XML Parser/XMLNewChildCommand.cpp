@@ -12,6 +12,7 @@ void XMLNewChildCommand::execute()
 	{
 		XMLElement& el = m_tree->get_element_by_id(m_id);
 		el.add_child();
+		std::cout << "Successfully created new empty child.\n";
 	}
 	else
 	{

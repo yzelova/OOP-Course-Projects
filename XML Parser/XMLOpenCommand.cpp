@@ -25,6 +25,7 @@ void XMLOpenCommand::execute()
 		std::ifstream in{ file_name };
 		m_tree->set_open_file_name(file_name);
 		m_tree->parse(in);
+		std::cout << "Successfully opened " << m_tree->get_open_file_name() << ".\n";
 	}
 	else
 	{

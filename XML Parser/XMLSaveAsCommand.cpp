@@ -22,6 +22,7 @@ void XMLSaveAsCommand::execute()
 	if (!m_tree->empty())
 	{
 		m_tree->save_as(m_file_name);
+		std::cout << "Successfully saved another "<<m_file_name<<".\n";
 	}
 	else
 	{
