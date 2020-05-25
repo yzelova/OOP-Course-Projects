@@ -1,6 +1,7 @@
 #pragma once
 #include "JSONStructure.hpp"
 
+
 class Core
 {
 public:

@@ -60,7 +60,7 @@ Optional<char> Parser::parse_character(char c, size_t position)
 }
 
 
-template <typename T>
+template <typename T>  
 bool Parser::vector_contains(Vector<T> vector, const T& el)
 {
 	return std::find(vector.begin(), vector.end(), el) != vector.end();
@@ -72,31 +72,31 @@ Optional<String> Parser::parse_string(size_t position,
 	const Vector<char>& endpoint_characters,
 	const Vector<char>& invalid_characters)
 {
-	if (position == content.length() - 1)
-	{
-		String rt{ content[position] };
-		return rt;
-	}
 	if (vector_contains(endpoint_characters, content[position]) )
 	{
 		update_position(position);
 		return "";
 	}
-	else if (vector_contains(invalid_characters, content[position]) || position == content.length())
+	if (position == content.length() - 1)
+	{
+		String rt{ content[position] };
+		update_position(position + 1);
+		return rt;
+	}
+	if (vector_contains(invalid_characters, content[position]) || position == content.length())
+	{
+		
+		return {};
+	}
+
+	std::optional<String> str = parse_string(position + 1, endpoint_characters, invalid_characters);
+	if (!str)
 	{
 		return {};
 	}
 	else
 	{
-		std::optional<String> str = parse_string(position + 1, endpoint_characters, invalid_characters);
-		if (!str)
-		{
-			return {};
-		}
-		else
-		{
-			return content[position] + str.value();
-		}
+		return content[position] + str.value();
 	}
 }
 
