@@ -1,0 +1,175 @@
+#include "CommandParser.hpp"
+#include "JSONOpenCommand.hpp"
+#include "JSONCloseCommand.hpp"
+#include "JSONSaveCommand.hpp"
+#include "JSONSaveAsCommand.hpp"
+#include "JSONHelpCommand.hpp"
+#include "JSONExitCommand.hpp"
+#include "JSONValidateCommand.hpp"
+#include "JSONPrintCommand.hpp"
+#include "JSONSearchCommand.hpp"
+#include "JSONSetCommand.hpp"
+#include "JSONCreateCommand.hpp"
+#include "JSONDeleteCommand.hpp"
+#include "JSONMoveCommand.hpp"
+#include "InvalidCommand.hpp"
+#include <iostream>
+
+CommandParser::CommandParser(const String& content, const Pointer<JSONStructure>& str) :
+	Parser(content),
+	m_structure{ str->clone() }
+{
+
+}
+
+Pointer<JSONCommand> CommandParser::parse_command()
+{
+	parse_whitespace(updated_position);
+	auto str = parse_string(updated_position, { ' ' }, {});
+	if (!str)
+	{
+		return std::make_unique<InvalidCommand>("Please, input command.");
+	}
+	if (str.value().compare("open") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto file_name = parse_string(updated_position, { ' ' }, {});
+		if (!file_name || file_name.value().length() < 5)
+		{
+			return std::make_unique<InvalidCommand>("Invalid file name.");
+		}
+		auto extension = file_name.value().substr(file_name.value().length() - 5);
+		if (extension.compare(".json") != 0)
+		{
+			return std::make_unique<InvalidCommand>("Invalid file format.");
+		}
+		return std::make_unique<JSONOpenCommand>(file_name.value(), m_structure->clone());
+	}
+	if (str.value().compare("close") == 0)
+	{
+		return std::make_unique<JSONCloseCommand>(m_structure->clone());
+	}
+	if (str.value().compare("save") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto path = parse_string(updated_position, { ' ' }, {});
+		if (path)
+		{
+			return std::make_unique<JSONSaveCommand>(m_structure->clone(), path.value());
+		}
+		else
+		{
+			return std::make_unique<JSONSaveCommand>(m_structure->clone());
+		}
+	}
+	if (str.value().compare("saveas") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto file_name = parse_string(updated_position, { ' ' }, {});
+		if (!file_name || file_name.value().length() < 5)
+		{
+			return std::make_unique<InvalidCommand>("Invalid file name.");
+		}
+		auto extension = file_name.value().substr(file_name.value().length() - 5);
+		if (extension.compare(".json") != 0)
+		{
+			return std::make_unique<InvalidCommand>("Invalid file format.");
+		}
+
+		parse_whitespace(updated_position);
+		auto path = parse_string(updated_position, { ' ' }, {});
+		if (path)
+		{
+			return std::make_unique<JSONSaveAsCommand>(file_name.value(), m_structure->clone(), path.value());
+		}
+		else
+		{
+			return std::make_unique<JSONSaveAsCommand>(file_name.value(), m_structure->clone());
+		}
+	}
+	if (str.value().compare("help") == 0)
+	{
+		return std::make_unique<JSONHelpCommand>();
+	}
+	if (str.value().compare("exit") == 0)
+	{
+		return std::make_unique<JSONExitCommand>();
+	}
+	if (str.value().compare("validate") == 0)
+	{
+		return std::make_unique<JSONValidateCommand>(m_structure->clone());
+	}
+	if (str.value().compare("print") == 0)
+	{
+		return std::make_unique<JSONPrintCommand>(m_structure->clone());
+	}
+	if (str.value().compare("search") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto key = parse_string(updated_position, { ' ' }, {});
+		if (!key)
+		{
+			return std::make_unique<InvalidCommand>("Input key.");
+		}
+		return std::make_unique<JSONSearchCommand>(m_structure->clone(), key.value());
+	}
+	if (str.value().compare("set") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto path = parse_string(updated_position, { ' ' }, {});
+		if (!path)
+		{
+			return std::make_unique<InvalidCommand>("Input path.");
+		}
+		parse_whitespace(updated_position);
+		auto str = parse_string(updated_position, { ' ' }, {});
+		if (!str)
+		{
+			return std::make_unique<InvalidCommand>("Input string.");
+		}
+		return std::make_unique<JSONSetCommand>(m_structure->clone(), path.value(), str.value());
+	}
+	if (str.value().compare("create") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto path = parse_string(updated_position, { ' ' }, {});
+		if (!path)
+		{
+			return std::make_unique<InvalidCommand>("Input path.");
+		}
+		parse_whitespace(updated_position);
+		auto str = parse_string(updated_position, { ' ' }, {});
+		if (!str)
+		{
+			return std::make_unique<InvalidCommand>("Input string.");
+		}
+		return std::make_unique<JSONCreateCommand>(m_structure->clone(), path.value(), str.value());
+	}
+	if (str.value().compare("delete") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto path = parse_string(updated_position, { ' ' }, {});
+		if (!path)
+		{
+			return std::make_unique<InvalidCommand>("Input path.");
+		}
+		return std::make_unique<JSONDeleteCommand>(m_structure->clone(), path.value());
+	}	
+	if (str.value().compare("move") == 0)
+	{
+		parse_whitespace(updated_position);
+		auto from = parse_string(updated_position, { ' ' }, {});
+		if (!from)
+		{
+			return std::make_unique<InvalidCommand>("Input <from> path.");
+		}
+		parse_whitespace(updated_position);
+		auto to = parse_string(updated_position, { ' ' }, {});
+		if (!to)
+		{
+			return std::make_unique<InvalidCommand>("Input <to> path.");
+		}
+		return std::make_unique<JSONMoveCommand>(m_structure->clone(), from.value(), to.value());
+	}
+	return std::make_unique<InvalidCommand>("Invalid command.");
+}
