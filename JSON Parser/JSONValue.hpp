@@ -23,7 +23,7 @@ public:
 	JSONValue(bool);
 	JSONValue(const String&);
 	JSONValue(double);
-	JSONValue(const Pair<String, Pointer<JSONValue>>&);
+	JSONValue(const Vector<Pair<String, Pointer<JSONValue>>>&);
 	JSONValue(const Vector<JSONValue>&);
 	JSONValue(const JSONValue&);
 	JSONValue& operator=(const JSONValue&);
@@ -32,11 +32,13 @@ public:
 		bool,
 		String,
 		double,
-		Pair<String, Pointer<JSONValue>>,
-		Vector<JSONValue>> get_value() const;
+		Vector<Pair<String, Pointer<JSONValue>>>,
+		Vector<JSONValue>> get_value();
 	Pointer<JSONValue> clone() const;
+	void print_tabs(std::ostream&, size_t depth) const;
+	void print(std::ostream&, size_t) const;
 private:
-	enum Type
+	enum class Type
 	{
 		b, 
 		s,
@@ -45,10 +47,10 @@ private:
 		ar,
 		nul
 	};
-	Type t;
-	bool boolean;
-	String string;
-	double number;
-	Pair<String, Pointer<JSONValue>> object;
-	Vector<JSONValue> arr;
+	Type t{ Type::n };
+	bool boolean{};
+	String string{};
+	double number{};
+	Vector<Pair<String, Pointer<JSONValue>>> object{};
+	Vector<JSONValue> arr{};
 };

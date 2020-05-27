@@ -12,6 +12,6 @@ using Pointer = std::unique_ptr<T>;
 class JSONPrintCommand :public JSONCommand
 {
 public:
-	JSONPrintCommand(const Pointer<JSONStructure>&);
+	JSONPrintCommand(JSONStructure*);
 	virtual void execute() final;
 };

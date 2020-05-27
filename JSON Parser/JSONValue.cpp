@@ -19,8 +19,12 @@ JSONValue::JSONValue(double val) : number{val}
 {
 	t = Type::n;
 }
-JSONValue::JSONValue(const Pair<String, Pointer<JSONValue>>& val) : object{val.first, val.second->clone()}
+JSONValue::JSONValue(const Vector<Pair<String, Pointer<JSONValue>>>& val) 
 {
+	std::for_each(val.begin(), val.end(), [this](auto& el) {
+		Pair<String, Pointer<JSONValue>> p = std::make_pair( el.first, el.second->clone() );
+		object.emplace_back(std::move(p));
+	});
 	t = Type::obj;
 }
 JSONValue::JSONValue(const Vector<JSONValue>& val)
@@ -47,7 +51,10 @@ JSONValue::JSONValue(const JSONValue& other)
 	}
 	if (t == Type::obj)
 	{
-		object = {other.object.first, other.object.second->clone()};
+		std::for_each(other.object.begin(), other.object.end(), [this](auto& el) {
+			Pair<String, Pointer<JSONValue>> p = std::make_pair(el.first, el.second->clone());
+			object.emplace_back(std::move(p));
+		});
 	}
 	if (t == Type::ar)
 	{
@@ -68,8 +75,8 @@ std::variant<
 	bool,
 	String,
 	double,
-	Pair<String, Pointer<JSONValue>>,
-	Vector<JSONValue>> JSONValue::get_value() const
+	Vector<Pair<String, Pointer<JSONValue>>>,
+	Vector<JSONValue>> JSONValue::get_value() 
 {
 	if (t == Type::b)
 	{
@@ -85,7 +92,7 @@ std::variant<
 	}
 	if (t == Type::obj)
 	{
-		return std::make_pair(object.first, object.second->clone());
+		return std::move(object);
 	}
 	if (t == Type::ar)
 	{
@@ -97,4 +104,46 @@ std::variant<
 Pointer<JSONValue> JSONValue::clone() const
 {
 	return std::make_unique<JSONValue>(this);
+}
+
+void JSONValue::print_tabs(std::ostream& out, size_t depth) const
+{
+	for (int i = 0; i < depth; i++)
+	{
+		out << " ";
+	}
+}
+
+void JSONValue::print(std::ostream& out, size_t depth) const
+{
+	print_tabs(out, depth);
+	if (t == Type::b)
+	{
+		out << std::boolalpha << boolean;
+	}
+	if (t == Type::s)
+	{
+		out << string;
+	}
+	if (t == Type::n)
+	{
+		out << number;
+	}
+	if (t == Type::obj)
+	{
+		out << "Object: ";
+		std::for_each(object.begin(), object.end(), [&out, &depth](auto& el) {
+			std::cout << std::endl;
+			std::cout << el.first << ":";
+			el.second->print(out, depth + 1);
+		});
+	}
+	if (t == Type::ar)
+	{
+		out << "Array: ";
+		std::for_each(arr.begin(), arr.end(), [&out, &depth](auto& el) {
+			std::cout << std::endl;
+			el.print(out, depth+1);
+		});
+	}
 }

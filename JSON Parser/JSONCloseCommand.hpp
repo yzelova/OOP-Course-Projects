@@ -8,6 +8,6 @@
 class JSONCloseCommand :public JSONCommand
 {
 public:
-	JSONCloseCommand(const Pointer<JSONStructure>&);
+	JSONCloseCommand(JSONStructure*);
 	virtual void execute() final;
 };

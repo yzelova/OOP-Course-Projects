@@ -1,13 +1,13 @@
 #include "JSONSaveCommand.hpp"
 
-JSONSaveCommand::JSONSaveCommand(const Pointer<JSONStructure>& str) :
+JSONSaveCommand::JSONSaveCommand(JSONStructure* str) :
 	JSONCommand(str),
 	m_path{}
 {
 
 }
 
-JSONSaveCommand::JSONSaveCommand(const Pointer<JSONStructure>& str, const String& path) :
+JSONSaveCommand::JSONSaveCommand(JSONStructure* str, const String& path) :
 	JSONCommand(str),
 	m_path{ path }
 {

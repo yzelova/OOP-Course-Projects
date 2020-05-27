@@ -11,8 +11,8 @@ using Optional = std::optional<T>;
 class JSONSaveAsCommand :public JSONCommand
 {
 public:
-	JSONSaveAsCommand(const String&, const Pointer<JSONStructure>&);
-	JSONSaveAsCommand(const String&, const Pointer<JSONStructure>&, const String&);
+	JSONSaveAsCommand(const String&, JSONStructure*);
+	JSONSaveAsCommand(const String&, JSONStructure*, const String&);
 	virtual void execute() final;
 private:
 	String m_file_name{};

@@ -12,7 +12,7 @@ using Pointer = std::unique_ptr<T>;
 class JSONSearchCommand :public JSONCommand
 {
 public:
-	JSONSearchCommand(const Pointer<JSONStructure>&, const String&);
+	JSONSearchCommand(JSONStructure*, const String&);
 	virtual void execute() final;
 private:
 	String m_key{};

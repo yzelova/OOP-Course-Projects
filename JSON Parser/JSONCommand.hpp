@@ -13,7 +13,7 @@ class JSONCommand : public ICommand
 {
 public:
 	JSONCommand() = default;
-	JSONCommand(const Pointer<JSONStructure>&);
-private:
-	Pointer<JSONStructure> m_str{};
+	JSONCommand(JSONStructure*);
+protected:
+	JSONStructure* m_str{};
 };

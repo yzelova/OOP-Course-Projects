@@ -1,6 +1,7 @@
 #include "JSONPrintCommand.hpp"
+#include <iostream>
 
-JSONPrintCommand::JSONPrintCommand(const Pointer<JSONStructure>& str) :
+JSONPrintCommand::JSONPrintCommand(JSONStructure* str) :
 	JSONCommand(str)
 {
 
@@ -8,5 +9,12 @@ JSONPrintCommand::JSONPrintCommand(const Pointer<JSONStructure>& str) :
 
 void JSONPrintCommand::execute()
 {
-
+	if (m_str->is_active())
+	{
+		std::cout << *m_str;
+	}
+	else
+	{
+		throw std::runtime_error("No file is currently open.");
+	}
 }

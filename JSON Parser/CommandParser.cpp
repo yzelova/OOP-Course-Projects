@@ -14,9 +14,9 @@
 #include "JSONMoveCommand.hpp"
 #include <iostream>
 
-CommandParser::CommandParser(const String& content, const Pointer<JSONStructure>& str) :
+CommandParser::CommandParser(const String& content, JSONStructure* str) :
 	Parser(content),
-	m_structure{ str->clone() }
+	m_structure{ str }
 {
 
 }
@@ -42,11 +42,11 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		{
 			throw std::runtime_error("Invalid file format.");
 		}
-		return std::make_unique<JSONOpenCommand>(file_name.value(), m_structure->clone());
+		return std::make_unique<JSONOpenCommand>(file_name.value(), m_structure);
 	}
 	if (str.value().compare("close") == 0)
 	{
-		return std::make_unique<JSONCloseCommand>(m_structure->clone());
+		return std::make_unique<JSONCloseCommand>(m_structure);
 	}
 	if (str.value().compare("save") == 0)
 	{
@@ -54,11 +54,11 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		auto path = parse_string(updated_position, { ' ' }, {});
 		if (path)
 		{
-			return std::make_unique<JSONSaveCommand>(m_structure->clone(), path.value());
+			return std::make_unique<JSONSaveCommand>(m_structure, path.value());
 		}
 		else
 		{
-			return std::make_unique<JSONSaveCommand>(m_structure->clone());
+			return std::make_unique<JSONSaveCommand>(m_structure);
 		}
 	}
 	if (str.value().compare("saveas") == 0)
@@ -79,11 +79,11 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		auto path = parse_string(updated_position, { ' ' }, {});
 		if (path)
 		{
-			return std::make_unique<JSONSaveAsCommand>(file_name.value(), m_structure->clone(), path.value());
+			return std::make_unique<JSONSaveAsCommand>(file_name.value(), m_structure, path.value());
 		}
 		else
 		{
-			return std::make_unique<JSONSaveAsCommand>(file_name.value(), m_structure->clone());
+			return std::make_unique<JSONSaveAsCommand>(file_name.value(), m_structure);
 		}
 	}
 	if (str.value().compare("help") == 0)
@@ -96,11 +96,11 @@ Pointer<JSONCommand> CommandParser::parse_command()
 	}
 	if (str.value().compare("validate") == 0)
 	{
-		return std::make_unique<JSONValidateCommand>(m_structure->clone());
+		return std::make_unique<JSONValidateCommand>(m_structure);
 	}
 	if (str.value().compare("print") == 0)
 	{
-		return std::make_unique<JSONPrintCommand>(m_structure->clone());
+		return std::make_unique<JSONPrintCommand>(m_structure);
 	}
 	if (str.value().compare("search") == 0)
 	{
@@ -110,7 +110,7 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		{
 			throw std::runtime_error("Input key.");
 		}
-		return std::make_unique<JSONSearchCommand>(m_structure->clone(), key.value());
+		return std::make_unique<JSONSearchCommand>(m_structure, key.value());
 	}
 	if (str.value().compare("set") == 0)
 	{
@@ -126,7 +126,7 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		{
 			throw std::runtime_error("Input string.");
 		}
-		return std::make_unique<JSONSetCommand>(m_structure->clone(), path.value(), str.value());
+		return std::make_unique<JSONSetCommand>(m_structure, path.value(), str.value());
 	}
 	if (str.value().compare("create") == 0)
 	{
@@ -142,7 +142,7 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		{
 			throw std::runtime_error("Input string.");
 		}
-		return std::make_unique<JSONCreateCommand>(m_structure->clone(), path.value(), str.value());
+		return std::make_unique<JSONCreateCommand>(m_structure, path.value(), str.value());
 	}
 	if (str.value().compare("delete") == 0)
 	{
@@ -152,7 +152,7 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		{
 			throw std::runtime_error("Input path.");
 		}
-		return std::make_unique<JSONDeleteCommand>(m_structure->clone(), path.value());
+		return std::make_unique<JSONDeleteCommand>(m_structure, path.value());
 	}	
 	if (str.value().compare("move") == 0)
 	{
@@ -168,7 +168,7 @@ Pointer<JSONCommand> CommandParser::parse_command()
 		{
 			throw std::runtime_error("Input <to> path.");
 		}
-		return std::make_unique<JSONMoveCommand>(m_structure->clone(), from.value(), to.value());
+		return std::make_unique<JSONMoveCommand>(m_structure, from.value(), to.value());
 	}
 	throw std::runtime_error("Invalid command.");
 }

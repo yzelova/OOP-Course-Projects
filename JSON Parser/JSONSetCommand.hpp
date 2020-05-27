@@ -12,7 +12,7 @@ using Pointer = std::unique_ptr<T>;
 class JSONSetCommand :public JSONCommand
 {
 public:
-	JSONSetCommand(const Pointer<JSONStructure>&, const String&, const String&);
+	JSONSetCommand(JSONStructure*, const String&, const String&);
 	virtual void execute() final;
 private:
 	String m_string{};

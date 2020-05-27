@@ -12,7 +12,7 @@ using Pointer = std::unique_ptr<T>;
 class JSONMoveCommand :public JSONCommand
 {
 public:
-	JSONMoveCommand(const Pointer<JSONStructure>&, const String&, const String&);
+	JSONMoveCommand(JSONStructure*, const String&, const String&);
 	virtual void execute() final;
 private:
 	String m_from{};

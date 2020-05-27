@@ -12,7 +12,7 @@ using Pointer = std::unique_ptr<T>;
 class JSONDeleteCommand :public JSONCommand
 {
 public:
-	JSONDeleteCommand(const Pointer<JSONStructure>&, const String&);
+	JSONDeleteCommand(JSONStructure*, const String&);
 	virtual void execute() final;
 private:
 	String m_path{};

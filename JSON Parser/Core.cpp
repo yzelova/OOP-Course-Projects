@@ -9,9 +9,9 @@ void Core::start()
 	String line{};
 	while (std::getline(std::cin, line))
 	{
-		CommandParser parser{ line, str.clone() };
 		try
 		{
+			CommandParser parser{ line, &str };
 			Pointer<JSONCommand> cmd = parser.parse_command();
 			if (dynamic_cast<JSONExitCommand*>(&*cmd) != nullptr)
 			{

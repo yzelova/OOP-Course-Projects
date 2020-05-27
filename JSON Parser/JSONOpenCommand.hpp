@@ -7,7 +7,7 @@
 class JSONOpenCommand :public JSONCommand
 {
 public:
-	JSONOpenCommand(const String&, const Pointer<JSONStructure>&);
+	JSONOpenCommand(const String&, JSONStructure*);
 	virtual void execute() final;
 private:
 	String m_file_name{};

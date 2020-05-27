@@ -1,6 +1,6 @@
 #include "JSONDeleteCommand.hpp"
 
-JSONDeleteCommand::JSONDeleteCommand(const Pointer<JSONStructure>& str, const String& path) :
+JSONDeleteCommand::JSONDeleteCommand(JSONStructure* str, const String& path) :
 	JSONCommand(str),
 	m_path{ path }
 {

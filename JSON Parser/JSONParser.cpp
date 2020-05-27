@@ -9,12 +9,12 @@ JSONParser::JSONParser(const String& content) : Parser(content)
 
 }
 
-Optional<JSONStructure> JSONParser::parse()
+Optional<JSONValue> JSONParser::parse()
 {
 	auto value = parse_value(updated_position);
 	if (value)
 	{
-		return JSONStructure{ value.value() };
+		return  value.value();
 	}
 	else
 	{
@@ -24,26 +24,36 @@ Optional<JSONStructure> JSONParser::parse()
 
 Optional<JSONValue> JSONParser::parse_value(size_t position)
 {	
+	parse_whitespace(updated_position);
 	auto number = parse_number();
 	if (number)
 	{
+		parse_whitespace(updated_position);
 		return JSONValue{ number.value() };
 	}
 	auto str = parse_json_string();
 	if (str)
 	{
+		parse_whitespace(updated_position);
 		return JSONValue{ str.value() };
 	}
 	auto boolean = parse_boolean();
 	if (boolean)
 	{
+		parse_whitespace(updated_position);
 		return JSONValue{ boolean.value() };
 	}
 	auto array = parse_array(updated_position);
 	if (array)
 	{
-		std::cout << "[]";
+		parse_whitespace(updated_position);
 		return JSONValue{ array.value() };
+	}
+	auto object = parse_object();
+	if (object)
+	{
+		parse_whitespace(updated_position);
+		return JSONValue{object.value()};
 	}
 	return {};
 }
@@ -74,7 +84,7 @@ Optional<double> JSONParser::parse_number()
 	{
 		return {};
 	}
-	auto str = parse_string(updated_position, { ' ', '[', '{', '"', ']' , '}' }, {});
+	auto str = parse_string(updated_position, { ' ', '[', '{', '"', ']' , '}', ',' }, {});
 	if (!str)
 	{
 		return {};
@@ -92,7 +102,7 @@ Optional<double> JSONParser::parse_number()
 
 Optional<bool> JSONParser::parse_boolean()
 {
-	auto str = parse_string(updated_position, {' ', '[', '{', '"', ']' , '}' }, {});
+	auto str = parse_string(updated_position, {' ', '[', '{', '"', ']' , '}', ',' }, {});
 	if (!str)
 	{
 		return {};
@@ -132,11 +142,84 @@ Optional<Vector<JSONValue>> JSONParser::parse_array(size_t position)
 			break;
 		}
 		rt.emplace_back(value.value());
+
+		ch = parse_character(',', updated_position);
+
 	}
+	
 	ch = parse_character(']', updated_position);
 	if (!ch)
 	{
 		throw std::runtime_error("Expected comma or closing bracket.");
 	}
+	return rt;
+}
+
+Optional<Vector<Pair<String, Pointer<JSONValue>>>> JSONParser::parse_object()
+{
+	Vector<Pair<String, Pointer<JSONValue>>> rt;
+	auto ch = parse_character('{', updated_position);
+
+	if (!ch)
+	{
+		return {};
+	}
+
+	while (true)
+	{
+		auto member = parse_member();
+
+		if (!member)
+		{
+			break;
+		}
+
+		Pair<String, Pointer<JSONValue>> mem{ member->first, member->second->clone() };
+		rt.emplace_back(std::move(mem));
+
+		ch = parse_character(',', updated_position);
+	}
+	ch = parse_character('}', updated_position);
+
+	if (!ch)
+	{
+		throw std::runtime_error("} expected.");
+	}
+
+	return std::move(rt);
+
+}
+
+Optional<Pair<String, Pointer<JSONValue>>> JSONParser::parse_member()
+{
+
+	parse_whitespace(updated_position);
+
+	auto key = parse_json_string();
+
+	if (!key)
+	{
+		return {};
+	}
+
+	parse_whitespace(updated_position);
+
+	auto ch = parse_character(':', updated_position);
+
+	if (!ch)
+	{
+		throw std::runtime_error(": expected.");
+	}
+
+	auto value = parse_value(updated_position);
+
+	if (!value)
+	{
+		throw std::runtime_error("Value expected.");
+	}
+
+
+	Pair<String, Pointer<JSONValue>> rt{ key.value(), value.value().clone() };
+
 	return rt;
 }

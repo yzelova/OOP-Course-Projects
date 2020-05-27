@@ -7,6 +7,6 @@
 class JSONValidateCommand :public JSONCommand
 {
 public:
-	JSONValidateCommand(const Pointer<JSONStructure>&);
+	JSONValidateCommand(JSONStructure*);
 	virtual void execute() final;
 };
