@@ -11,7 +11,7 @@ void JSONPrintCommand::execute()
 {
 	if (m_str->is_active())
 	{
-		std::cout << *m_str;
+		std::cout << *m_str << std::endl;
 	}
 	else
 	{

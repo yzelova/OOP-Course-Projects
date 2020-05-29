@@ -29,7 +29,7 @@ void XMLOpenCommand::execute()
 	}
 	else
 	{
-		InvalidCommand cmd{ "Another file is currently open. Plase close it." };
+		InvalidCommand cmd{ "Another file is currently open. Please close it." };
 		cmd.execute();
 	}
 }

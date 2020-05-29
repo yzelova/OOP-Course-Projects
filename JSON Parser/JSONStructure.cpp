@@ -76,3 +76,13 @@ std::ostream& operator<<(std::ostream& out, const JSONStructure& str)
 	str.m_base.print(out, 0);
 	return out;
 }
+
+Vector<JSONValue> JSONStructure::search(const String& key)
+{
+	return m_base.search(key);
+}
+
+JSONValue* JSONStructure::get_element()
+{
+	return &m_base;
+}

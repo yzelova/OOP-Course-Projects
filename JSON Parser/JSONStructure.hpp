@@ -31,6 +31,10 @@ public:
 	void clear();
 
 	friend std::ostream& operator<<(std::ostream&, const JSONStructure&);
+
+	Vector<JSONValue> search(const String&);
+
+	JSONValue* get_element();
 private:
 	String m_file_name{};
 	String raw_content{};
