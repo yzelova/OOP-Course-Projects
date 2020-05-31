@@ -282,6 +282,7 @@ JSONValue* JSONValue::add_new_object(const String& key)
 
 JSONValue* JSONValue::add_array_element(int n)
 {
+	if (n < arr.size())return &arr[n];
 	for (auto i{ arr.size() }; i < n; i++)
 	{
 		arr.emplace_back(JSONValue());

@@ -2,15 +2,10 @@
 
 #include "XMLCommand.hpp"
 
-///Implementing Command Patter XMLSaveAsCommand
 class XMLSaveAsCommand : public XMLCommand
 {
 public:
 	XMLSaveAsCommand() = default;
-	/**XMLSaveAsCommand ctor()
-	 * XMLTree* is pointer to currently loaded XML Tree,
-	 * String is file name
-	 */
 	XMLSaveAsCommand(const String&, XMLTree*);
 	virtual void execute() final;
 	virtual ~XMLSaveAsCommand() = default;

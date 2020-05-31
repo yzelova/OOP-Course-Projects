@@ -94,6 +94,12 @@ XMLCommand* CommandParser::parse_command()
 		String id{ find_string(pos) };
 		return new XMLChildrenCommand{ m_tree, id };
 	}
+	if (operation == "text")
+	{
+		pos = find_next_pos(pos + operation.length());
+		String id{ find_string(pos) };
+		return new XMLTextCommand{ m_tree, id };
+	}
 	if (operation == "child")
 	{
 		pos = find_next_pos(pos + operation.length());

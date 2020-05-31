@@ -30,12 +30,12 @@ XMLElement* XMLElement::get_by_id(const String& id)
 	{
 		return this;
 	}
-	auto el = std::find_if(m_elements.begin(), m_elements.end(), [&id](XMLElement& el) -> bool {
-		auto res = el.get_by_id(id);
-		return res != nullptr;
-	});
-	if (el == m_elements.end()) return nullptr;
-	return &*el;
+	XMLElement* el{ nullptr };
+	for (auto i{ 0 }; i<m_elements.size(); i++)
+	{
+		if(el==nullptr)el = m_elements[i].get_by_id(id);
+	};
+	return el;
 }
 
 void XMLElement::print(size_t depth, std::ostream& out) const

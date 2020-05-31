@@ -136,7 +136,7 @@ JSONValue* PathParser::parse_array_element_or_create()
 		auto number = parse_string(updated_position, { ']' }, { });
 		if (!number) throw std::runtime_error("Expected number.");
 		n = std::stoi(number.value());
-		auto el = cur_value->get_array_element(n);
+		auto el = cur_value->add_array_element(n);
 		rt = el;
 		
 	}

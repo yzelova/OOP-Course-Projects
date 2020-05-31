@@ -16,4 +16,8 @@ void JSONSearchCommand::execute()
 		el.print(std::cout, 0);
 		std::cout << std::endl;
 	});
+	if (results.size() == 0)
+	{
+		std::cout << "Nothing found.\n";
+	}
 }

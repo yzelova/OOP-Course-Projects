@@ -32,7 +32,7 @@ Pointer<JSONCommand> CommandParser::parse_command()
 	if (str.value().compare("open") == 0)
 	{
 		parse_whitespace(updated_position);
-		auto file_name = parse_string(updated_position, { ' ' }, {});
+		auto file_name = parse_string(updated_position, { }, {});
 		if (!file_name || file_name.value().length() < 5)
 		{
 			throw std::runtime_error("Invalid file name.");
@@ -64,7 +64,7 @@ Pointer<JSONCommand> CommandParser::parse_command()
 	if (str.value().compare("saveas") == 0)
 	{
 		parse_whitespace(updated_position);
-		auto file_name = parse_string(updated_position, { ' ' }, {});
+		auto file_name = parse_string(updated_position, { }, {});
 		if (!file_name || file_name.value().length() < 5)
 		{
 			throw std::runtime_error("Invalid file name.");

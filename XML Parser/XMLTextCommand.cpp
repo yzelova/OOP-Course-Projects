@@ -10,8 +10,8 @@ void XMLTextCommand::execute()
 {
 	if (!m_tree->empty())
 	{
-		XMLElement element = m_tree->get_element_by_id(m_id);
-		std::cout << element.get_text() << std::endl;
+		XMLElement& element = m_tree->get_element_by_id(m_id);
+		if(&element!=nullptr)std::cout << element.get_text() << std::endl;
 	}
 	else
 	{
