@@ -8,7 +8,7 @@
 class JSONValidateCommand :public JSONCommand
 {
 public:
-	/**JSONValidate ctor()
+	/**JSONValidateCommand ctor()
 	 * JSONStructure* is pointer to currently loaded JSON Structure
 	 */
 	JSONValidateCommand(JSONStructure*);

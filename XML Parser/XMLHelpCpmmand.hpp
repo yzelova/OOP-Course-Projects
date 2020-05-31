@@ -2,6 +2,7 @@
 
 #include "XMLCommand.hpp"
 
+///Implementing Command Patter XMLHelpCommand
 class XMLHelpCommand : public XMLCommand
 {
 public:

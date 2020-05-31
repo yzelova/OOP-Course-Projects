@@ -5,7 +5,7 @@
 class Core
 {
 public:
-	///starting application
+	///starts application
 	void start();
 private:
 	JSONStructure str{};

@@ -5,9 +5,11 @@
 
 using FileStream = std::fstream;
 
+///core class for starting application
 class Core
 {
 public:
+	///starts application
 	void start();
 
 private:

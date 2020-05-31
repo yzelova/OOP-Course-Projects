@@ -15,7 +15,7 @@ public:
 	///CommandParser ~dtor()
 	virtual ~CommandParser() = default;
 
-	///parser command line command
+	///parses command line command
 	Pointer<JSONCommand> parse_command();
 
 private:

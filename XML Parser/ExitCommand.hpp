@@ -2,6 +2,7 @@
 
 #include "XMLCommand.hpp"
 
+///Implementing Command Patter ExitCommand
 class ExitCommand : public XMLCommand
 {
 public:

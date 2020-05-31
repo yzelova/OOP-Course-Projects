@@ -8,10 +8,13 @@
 #include <memory>
 #include <variant>
 
+///class for parsing raw content to XML Tree
 struct XMLParser : public Parser
 {
 public:
+	///reads content from input stream
 	void read(std::istream&);
+	///parses content to XML
 	void parse(XMLTree*);
 
 
