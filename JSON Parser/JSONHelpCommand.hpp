@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+///Implementing Command Patter JSONHelpCommand
 class JSONHelpCommand :public JSONCommand
 {
 public:

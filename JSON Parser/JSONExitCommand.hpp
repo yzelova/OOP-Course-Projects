@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-
+///Implementing Command Patter JSONExitCommand
 class JSONExitCommand :public JSONCommand
 {
 public:
